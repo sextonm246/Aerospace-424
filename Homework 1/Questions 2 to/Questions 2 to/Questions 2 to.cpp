@@ -1,5 +1,5 @@
 // Michael Sexton
-// Question 2, 3, 
+// Questions 2, 3, 4, 5
 
 #include <iostream>
 #include <iomanip>
@@ -18,16 +18,60 @@ private:
     string origin; string destination;
     airportmap flightdistance;
 public:
-    Plane(const string& from, const string& to);
-    ~Plane();
+    Plane(const string& from, const string& to) {
+        distance = flightdistance[from][to];
+        pos = 0; vel = 0; at_SCE = 0;
+        cout << "Plane Created at " << this << endl;
+    }
+    ~Plane() {
+        cout << "Plane Destroyed" << endl;
+    }
     void operate(double dt);
     double getpos() const;
     double getvel() const;
     void setvel(double velocity);
     string getorigin() const;
-    string getdestingation() const;
+    string getdestination() const;
     bool getatSCE() const;
 };
+
+void Plane::operate(double dt) {
+    string dummy;
+    if (pos < distance) {
+        pos += vel * dt;
+        at_SCE = 0;
+    }
+    else {
+        if (destination == "SCE") {
+            at_SCE = 1;
+
+        }
+        dummy = origin;
+        origin = destination;
+        destination = dummy;
+        pos = 0.0;
+    }
+}
+double Plane::getpos() const {
+    return pos;
+}
+double Plane::getvel() const {
+    return vel;
+}
+void Plane::setvel(double velocity) {
+    vel = velocity;
+}
+string Plane::getorigin() const {
+    return origin;
+}
+string Plane::getdestination() const {
+    return destination;
+}
+bool Plane::getatSCE() const {
+    return at_SCE;
+}
+
+
 
 int main()
 {
