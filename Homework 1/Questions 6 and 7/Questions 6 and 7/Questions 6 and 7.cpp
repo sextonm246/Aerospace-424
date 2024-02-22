@@ -18,7 +18,7 @@ private:
 public:
     Plane(const string& from, const string& to) : origin(from), destination(to) {
         pos = 0; vel = 0; at_SCE = 0;
-        cout << "Plane Created at " << this << endl;
+        cout << "Plane Created with tail number " << this << endl;
         flightdistance[{"SCE", "PHL"}] = 160; // Question 2
         flightdistance[{"SCE", "ORD"}] = 640;
         flightdistance[{"SCE", "EWR"}] = 220;
@@ -26,7 +26,7 @@ public:
         if (check != flightdistance.end())
         {
             distance = check->second;
-            cout << "Distance between " << origin << " and " << destination << ": " << distance << " miles" << endl;
+            //cout << "Distance between " << origin << " and " << destination << ": " << distance << " miles" << endl;
         }
     }
     ~Plane() {
@@ -74,8 +74,8 @@ private:
     string name;
 
 public: 
-    Pilot(const string& pilot_name, Plane* plane_pointer) : name(pilot_name), myPlane(plane_pointer) {
-        cout << name << " is athe the gate and ready to board the plane. Memory address: " << this << endl;
+    Pilot(const string& pilot_name) : name(pilot_name), myPlane(nullptr) {
+        cout << "Pilot " << name << " with certificate number " << this << " is at the gate and ready to board the plane. \n";
     }
     ~Pilot() {
         cout << name << " is out of the plane. \n";
@@ -95,13 +95,35 @@ int main()
     // Setting distances for each flight possibility
     double velocity = 425;
 
-    airplane.setvel(velocity);
 
-    for (int i = 0; i <= 1000; i++) {
-        double timestep = 25;
+    airplane.setvel(velocity);
+    Pilot pilot1("Alpha");
+    Pilot pilot2("Bravo");
+
+    string pilot = ("Alpha"); string copilot = ("Bravo");
+    auto pilotnumber = &pilot1; auto copilotnumber = &pilot2;
+
+
+    cout << "Pilot " << pilot << " with certificate number " << pilotnumber << " is in control of a plane: " << &airplane << endl;
+    cout << "Pilot " << copilot << " with certificate number " << copilotnumber << " is not in control of the airplane. \n";
+
+    for (int i = 0; i <= 2000; i++) {
+        double timestep = 20;
         airplane.operate(timestep);
         int time = timestep * i;
-        cout << "Time: " << time << " seconds. Position: " << airplane.getpos() << " miles." << endl;
+        //cout << "Time: " << time << " seconds. Position: " << airplane.getpos() << " miles." << endl;
+        //cout << airplane.getatSCE() << endl;    
+        if (airplane.getatSCE() == 1) {
+            cout << "The plane " << &airplane << " is at SCE. \n";
+            swap(pilot, copilot); // Switching out the pilot
+            swap(pilotnumber, copilotnumber);
+
+            cout << "Pilot " << pilot << " with certificate number " << pilotnumber << " is in control of a plane: " << &airplane << endl;
+            cout << "Pilot " << copilot << " with certificate number " << copilotnumber << " is not in control of the airplane. \n" << endl;
+        }
     }
+    
+
+
     return 0;
 }
