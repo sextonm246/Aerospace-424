@@ -122,8 +122,5 @@ int main()
             cout << "Pilot " << copilot << " with certificate number " << copilotnumber << " is not in control of the airplane. \n" << endl;
         }
     }
-    
-
-
     return 0;
 }
